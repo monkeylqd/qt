@@ -26,6 +26,8 @@ private:
     int m_attr;
     int m_color;
     QVector<float> m_PointsVertex;
+    float *m_buff;
+    int m_buff_size;
 
 protected:
     virtual void initializeGL() override;
