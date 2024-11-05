@@ -9,6 +9,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLFunctions>
+#include <QVector>
 class LqdOpenGLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 {
     Q_OBJECT
@@ -24,6 +25,7 @@ private:
     QOpenGLShaderProgram m_OpenGLShader_1;
     int m_attr;
     int m_color;
+    QVector<float> m_PointsVertex;
 
 protected:
     virtual void initializeGL() override;
