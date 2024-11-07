@@ -24,15 +24,23 @@
 //    0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    1.5f, 1.5f,   // 右上
 //};
 
+//static GLfloat m_vertices[]={
+//    // 位置              // 颜色               //纹理坐标
+//    1.0f, -1.0f, 0.0f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,   // 右下
+//    -1.0f, -1.0f, 0.0f,  0.0f, 1.0f, 0.0f,    0.0f, 0.0f,   // 左下
+//    -1.0f,  1.0f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 1.0f,   // 左下
+//    1.0f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f,    1.0f, 1.0f,   // 右上
+//};
+
 static GLfloat m_vertices[]={
     // 位置              // 颜色               //纹理坐标
-    1.5f, -1.5f, 0.0f,  1.0f, 0.0f, 0.0f,    1.5f, 0.0f,   // 右下
-    -1.5f, -1.5f, 0.0f,  0.0f, 1.0f, 0.0f,    0.0f, 0.0f,   // 左下
-    -1.5f,  1.5f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 1.5f,   // 左下
-    1.5f,  1.5f, 0.0f,  0.0f, 0.0f, 1.0f,    1.5f, 1.5f,   // 右上
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,   // 右下
+    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,    0.0f, 0.0f,   // 左下
+    -0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 1.0f,   // 左下
+    0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    1.0f, 1.0f,   // 右上
 };
 
-LqdOpenGLWidget::LqdOpenGLWidget(QWidget *parent) : QOpenGLWidget(parent), m_texture(QOpenGLTexture::Target2D)
+LqdOpenGLWidget::LqdOpenGLWidget(QWidget *parent) : QOpenGLWidget(parent), m_texture(QOpenGLTexture::Target2D), m_cstexture(QOpenGLTexture::Target2D)
 {
 
 }
@@ -49,19 +57,6 @@ void LqdOpenGLWidget::initializeGL()
 {
     qDebug("start initializeGL\n");
     initializeOpenGLFunctions();
-    // 纹理的相关配置必须在initializeGL里面
-    m_texture.create();
-//    m_texture.setData(QImage(":/image/wall.jpg"));
-    m_texture.setData(QImage(":/image/cs.png").mirrored());
-    m_texture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::Repeat);
-    m_texture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::Repeat);
-//    m_texture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::MirroredRepeat);
-//    m_texture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::MirroredRepeat);
-    m_texture.setBorderColor(QColor(1.0f,1.0f,1.0f,1.0f));
-    m_texture.setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
-    m_texture.setMinMagFilters(QOpenGLTexture::LinearMipMapLinear,QOpenGLTexture::Linear);
-
-    //    glShadeModel(GL_FLAT);
     m_OpenGLShader_1.bind();
     if(!m_OpenGLShader_1.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/shader/shader.vert"))
     {
@@ -75,6 +70,31 @@ void LqdOpenGLWidget::initializeGL()
     {
         qDebug("link fail.\n");
     }
+
+    // 纹理的相关配置必须在initializeGL里面
+    m_texture.create();
+    m_texture.setData(QImage(":/image/wall.jpg").mirrored());
+//    m_texture.setData(QImage(":/image/cs.png").mirrored());
+        m_texture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::Repeat);
+        m_texture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::Repeat);
+    //    m_texture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::MirroredRepeat);
+    //    m_texture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::MirroredRepeat);
+    //    m_texture.setBorderColor(QColor(1.0f,1.0f,1.0f,1.0f));
+    //    m_texture.setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
+        m_texture.setMinMagFilters(QOpenGLTexture::LinearMipMapLinear,QOpenGLTexture::Linear);
+
+    m_cstexture.create();
+    m_cstexture.setData(QImage(":/image/cs.png").mirrored());
+//        m_cstexture.setData(QImage(":/image/wall.jpg").mirrored());
+        m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::Repeat);
+        m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::Repeat);
+    //    m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::MirroredRepeat);
+    //    m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::MirroredRepeat);
+    //    m_cstexture.setBorderColor(QColor(1.0f,1.0f,1.0f,1.0f));
+    //    m_cstexture.setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
+        m_cstexture.setMinMagFilters(QOpenGLTexture::LinearMipMapLinear,QOpenGLTexture::Linear);
+
+    //    glShadeModel(GL_FLAT);
 
     m_VAO.create();
     m_VAO.bind();
@@ -96,6 +116,7 @@ void LqdOpenGLWidget::initializeGL()
     m_OpenGLShader_1.enableAttributeArray(m_textureID);
 
 
+
     m_OpenGLShader_1.release();
 
 
@@ -112,13 +133,14 @@ void LqdOpenGLWidget::paintGL()
     //    glClearColor(1.0, 1.0, 0.0, 0.0);
     //    glClear(GL_COLOR_BUFFER_BIT);
     m_OpenGLShader_1.bind();
-    m_VAO.bind();
+//    m_VAO.bind();
     m_texture.bind(0);
-    m_OpenGLShader_1.setUniformValue("ourTexture", 0);
-    //    glDrawArrays(GL_TRIANGLES, 0, 3);
-    //    glDrawArrays(GL_LINE_LOOP, 0, 4);
-    //    glDrawArrays(GL_QUADS, 0, 4);
-    glDrawArrays(GL_POLYGON, 0, 4);
+    m_cstexture.bind(1);
+
+    m_OpenGLShader_1.setUniformValue("ourTexture", 0);  // 纹理单元绑定必须在paintGL里面
+    m_OpenGLShader_1.setUniformValue("csTexture", 1);  // 纹理单元绑定必须在paintGL里面
+    glDrawArrays(GL_QUADS, 0, 4);
+    //    glDrawArrays(GL_POLYGON, 0, 4);
     //    glDrawArrays(GL_POINTS, 0, 4);
     m_VAO.release();
     m_OpenGLShader_1.release();

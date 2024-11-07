@@ -27,6 +27,7 @@ private:
     int m_color;
     int m_textureID;
     QOpenGLTexture m_texture;
+    QOpenGLTexture m_cstexture;
 
 protected:
     virtual void initializeGL() override;
