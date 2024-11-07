@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/shader">
+        <file>shader.frag</file>
+        <file>shader.vert</file>
+    </qresource>
+    <qresource prefix="/image">
+        <file>wall.jpg</file>
+        <file>cs.png</file>
+        <file>samile.png</file>
+    </qresource>
+</RCC>
