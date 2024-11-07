@@ -32,12 +32,20 @@
 //    1.0f,  1.0f, 0.0f,  0.0f, 0.0f, 1.0f,    1.0f, 1.0f,   // 右上
 //};
 
+//static GLfloat m_vertices[]={
+//    // 位置              // 颜色               //纹理坐标
+//    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,   // 右下
+//    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,    0.0f, 0.0f,   // 左下
+//    -0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 1.0f,   // 左下
+//    0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    1.0f, 1.0f,   // 右上
+//};
+
 static GLfloat m_vertices[]={
     // 位置              // 颜色               //纹理坐标
-    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    1.0f, 0.0f,   // 右下
+    0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,    3.0f, 0.0f,   // 右下
     -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,    0.0f, 0.0f,   // 左下
-    -0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 1.0f,   // 左下
-    0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    1.0f, 1.0f,   // 右上
+    -0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 1.0f,    0.0f, 3.0f,   // 左下
+    0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f,    3.0f, 3.0f,   // 右上
 };
 
 LqdOpenGLWidget::LqdOpenGLWidget(QWidget *parent) : QOpenGLWidget(parent), m_texture(QOpenGLTexture::Target2D), m_cstexture(QOpenGLTexture::Target2D)
@@ -83,11 +91,15 @@ void LqdOpenGLWidget::initializeGL()
     //    m_texture.setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
         m_texture.setMinMagFilters(QOpenGLTexture::LinearMipMapLinear,QOpenGLTexture::Linear);
 
+        float borderColor[] = {1.0, 1.0, 0.0, 1.0};
     m_cstexture.create();
     m_cstexture.setData(QImage(":/image/cs.png").mirrored());
 //        m_cstexture.setData(QImage(":/image/wall.jpg").mirrored());
-        m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::Repeat);
-        m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::Repeat);
+//    m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::Repeat);
+//    m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::Repeat);
+    m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::ClampToBorder);
+    m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::ClampToBorder);
+    m_cstexture.setBorderColor(1.0f, 1.0f, 0.0f, 1.0f);
     //    m_cstexture.setWrapMode(QOpenGLTexture::DirectionS,QOpenGLTexture::MirroredRepeat);
     //    m_cstexture.setWrapMode(QOpenGLTexture::DirectionT,QOpenGLTexture::MirroredRepeat);
     //    m_cstexture.setBorderColor(QColor(1.0f,1.0f,1.0f,1.0f));
